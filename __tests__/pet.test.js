@@ -35,6 +35,10 @@ describe('grow up', () => {
   it('getting older will decrease fitness property by 3', () => {
     expect(pet.fitness).toEqual(7);
   });
+  it('pet is dead', () => {
+    pet.age = 30;
+    expect(() => pet.growUp()).toThrow('Your pet died :(');
+  });
 });
 
 describe('pet walk', () => {
@@ -51,6 +55,10 @@ describe('pet walk', () => {
     pet.walk();
     expect(pet.fitness).toEqual(10);
   });
+  it('pet is dead', () => {
+    pet.fitness = 0;
+    expect(() => pet.walk()).toThrow('Your pet died :(');
+  });
 });
 describe('feeding pet', () => {
 
@@ -66,33 +74,38 @@ describe('feeding pet', () => {
     pet.eatingFood();
     expect(pet.hunger).toEqual(0);
   });
+  it('pet is dead', () => {
+    pet.hunger = 10;
+    expect(() => pet.eatingFood()).toThrow('Your pet died :(');
+  });
 });
 describe('checkUp', () => {
+  const pet = new Pet('fido');
 
   it('if the pet fitness is 3 or less', () => {
       const pet = new Pet('fido');
       pet.fitness = 3;
       expect(pet.checkUp()).toBe('I need a walk'); 
   });
-
   it('if the pet hunger is 5 or more', () => {
-    const pet = new Pet('fido');
       pet.hunger = 5;
       expect(pet.checkUp()).toBe('I am hungry'); 
   });
-
   it('if the pet hunger is 5 or more and fitness 3 or less', () => {
-    const pet = new Pet('fido');
       pet.hunger = 5;
       pet.fitness = 3;
       expect(pet.checkUp()).toBe('I am hungry AND I need a walk'); 
   });
-
   it('if the pet hunger is 4 or less and fitness 4 or more', () => {
-    const pet = new Pet('fido');
       pet.hunger = 4;
       pet.fitness = 4;
       expect(pet.checkUp()).toBe('I feel great!'); 
+  });
+  it('pet is dead', () => {
+    pet.age = 30;
+    pet.fitness = 0;
+    pet.hunger = 10;
+    expect(() => pet.checkUp()).toThrow('Your pet died :(');
   });
 });
 describe('check if pet is alive', () => {
